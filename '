@@ -1,0 +1,155 @@
+---
+layout: post
+title: Less Painful Matrix Calculus
+use_math: true
+---
+
+<div style="display none">
+$$
+  \newcommand{\bm}[1]{\boldsymbol{#1}}
+  \newcommand{\mb}[1]{\mathbb{#1}}
+  \newcommand{\mc}[1]{\mathcal{#1}}
+  \newcommand{\trace}{\text{trace}}
+  \newcommand{\real}{\mathbb{R}}
+  \renewcommand{\vec}{\text{vec}}
+  \newcommand{\norm}[1]{\left\Vert #1 \right\Vert}
+$$
+<div/>
+
+---
+**Quick warning:** I'm writing this post mostly as a reference since I've had a hard time finding a good at-a-glance resource for differentials. In other words, no apologies for dryness.
+
+---
+
+There have been various points throughout my grad school experience where I've found myself struggling to compute derivatives of some fancy-schmancy matrix functions like nuclear norms $\norm{ \bm{A} }\_\*$
+or even atomic norms $\norm{\bm{A}}\_{\mc{A}}$ (which is a topic for another blog post).
+These kinds of problems used to induce a lot stress googling until about a year ago when *my whole life changed*. 
+Oddly reminiscent of the first time I used a bidet.
+Well, not really. 
+But at the very least, I got to spend less time reading [math overflow posts](https://mathoverflow.net) and more time stuck on the big problems like "what am I making for dinner tonight?"
+
+The method to which I'm referring is differentials. I'm sure that this stuff is fairly well-known, I just have a hard time finding satisfactory references ergo this blog post.
+You can find this stuff in [Matrix Calculus](https://www.cambridge.org/core/books/matrix-algebra/BCE8FD2D62006D4061F88E02615B5622) by Karim M. Abadir -- I'll be using some examples found there as well as a set of lecture slides by Gonggou Tang for his convex optimization class (I'm not sure if these slides are publicly available). 
+
+## Definitions
+
+Differentials aren't really anything fancy. 
+The concept pretty much comes straight out of the first principles definition of a derivative for a univariate function $f : \real \rightarrow \real$
+
+$$
+  f'(x) := \lim\limits_{dx \rightarrow \infty} \frac{f(x + dx) - f(x)}{dx}.
+$$
+
+By rearranging, we get
+
+$$
+  f(x + dx) = f(x) + f'(x) (dx) + r_x(dx),
+$$
+
+where $r_x(dx) - \rightarrow 0$ as $dx \rightarrow 0$. 
+Okay, but what does that get us? 
+Well, as it turns out, the **differential** of $f$ is defined as
+
+$$
+  df(x ; dx) := f'(x) (dx).
+$$
+
+This means that if we can easily compute the differential, then we get the derivative for free. 
+More generally, for a vector function $f : \real^n \rightarrow \real^m$, we write the differential as 
+
+\begin{equation}\label{eq:1st differential}
+  df(x ; dx) := \bm{D}(x) (dx)
+\end{equation}
+
+where 
+
+$$
+  \bm{D}(x) = \begin{bmatrix}
+    \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+    \vdots & \ddots & \vdots \\
+    \frac{\partial f_m}{\partial x_1} & \cdots & \frac{\partial f_m}{\partial x_n}
+  \end{bmatrix} \in \real^{m \times n}
+$$
+
+is the derivative matrix. 
+The "$;$" notation becomes a bit cumbersome in places, so I'll only use it for definitions and use $df(x)$ otherwise.
+
+As it turns out, differentials work similarly for matrix valued functions $f : \real^{m \times n} \to \real^{l \times k}$, but I'll spare you the details. 
+It's worth pointing out that $\bm{D}(x) = \bm{J}(x)^\top$ -- the Jacobian matrix. 
+In the scalar-valued case $f : \real^m \to \real$, this means that the derivative vector is simply the gradient transposed $\bm{D}(x) = \nabla f(x)^\top$.
+
+### Second Derivatives
+
+Differentials become particularly helpful once we realize that we can compute second order derivatives just as easily.
+Recall the Taylor series expansion
+
+$$
+  f(x + dx) = f(x) + \bm{D}(x)(dx) + \frac{1}{2}(dx)^\top \bm{H}(x) (dx) + \mc{O}(\norm{ dx }_2^2),
+$$
+
+which gives us a matrix encapsulating second order derivative information $\bm{H}(x)$ called the Hessian matrix.
+
+Given how intimiately connected the Taylor series and differentials are, we should expect there to be a way to get $\bm{H}(x)$ that's just as easy as getting $\bm{D}(x)$.
+As it turns out, all we have to do is compute the differential of the differential and match up terms:
+
+\begin{equation}\label{eq:2nd differential}
+  d^2 f(x; dx) := (dx)^\top \bm{B}(x) (dx) \quad\Rightarrow\quad \bm{H}(x) = \frac{1}{2}(\bm{B}(x) + \bm{B}(x)^\top).
+\end{equation}
+
+Notice that the second differential gives us a matrix $\bm{B}(x)$ -- this matrix doesn't have to be symmetric in general.
+This is a problem since the Hessian $\bm{H}(x)$ is by definition symmetric.
+This is easily solved by taking the symmetric part of $\bm{B}(x)$, which is precisely what we have in Eq. (\ref{eq:2nd differential}).
+
+## Rules
+
+The above definitions are all well and good, but they don't give us a way to actually find differentials. 
+So far, there's no perceivable benefit to using differentials at all! 
+Well, just like in kindergarten calculus, we have a standard set of rules for differentials -- the product rule, chain rule, and so forth (no quotient rule, we're in vector calculus land, baby).
+These rules work pretty much exactly the same as in regular calculus, which is great news because it makes the overhead of using them minimal.
+
+### Chain Rule
+
+Let's get the chain rule out of the way first. Remember that the standard vector calculus chain rule is
+
+$$
+  \bm{D} f(g(x)) = \bm{D}_f \, f(g(x)) \bm{D}_g \, g(x).
+$$
+
+The chain rule for differentials is analogous, it just has a fancy syntax and fancier name -- **Cauchy's Rule of Invariance**:
+
+$$
+  d h(x; dx) = df\left( g(x); dg(x; dx) \right), \quad\quad h(x) := f(g(x)).
+$$
+
+This looks mysterious, but it's functionally the same thing.
+For example, if $f(x) = e^{x^2}$,
+
+$$
+  df(x) = d\left( e^{x^2} \right) = e^{x^2} (d(x^2)) = e^{x^2} (2x \cdot dx),
+$$
+
+which is exactly what we get when computing derivatives the normal way (differentials aren't too special in 1D).
+So that works.
+What doesn't work is trying to use Cauchy's invariance for the second differential $d^2$. 
+This should be fairly obvious, but heres an example using the same function: if we naively use the chain rule on $d^2$, we get
+
+$$
+  d^2\left( e^{x^2} \right) = e^{x^2} (d^2(x^2)) = e^{x^2} (4x^2) (dx)^2,
+$$
+
+which is incorrect. In reality,
+
+\begin{align}
+  d^2 f(x) &= d\left( d\left( e^{x^2} \right) \right) \\
+    &= d\left( 2x e^{x^2} \cdot dx \right) \\
+    &= 2(dx) e^{x^2} \cdot dx + 2x e^{x^2} (2x \cdot dx) \cdot dx \\
+    &= ( 2e^{x^2} + 2x e^{x^2} ) (dx)^2
+\end{align}
+
+Note that I've used the product rule here without actually defining it for you.
+This is okay since it works exactly the same as in standard calculus.
+
+### The Other Rules
+
+Everything 
+
