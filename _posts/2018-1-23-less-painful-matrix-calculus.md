@@ -163,10 +163,10 @@ Apparently there are rules set up for second differentials explicitly, but I've 
 I've mentioned this a couple times, but the standard calculus rules translate pretty much directly over to differentials. 
 Here's a summary of the rules (Figures 1, 2) that I'm ripping directly out of Gongguo Tang's lecture slides.
 
-![table 1]({{ site.url }}/images/1-23-19/rules_table1.png)
+![table 1]({{ site.url }}/images/1-23-19/rules_table1.PNG)
 <center>Figure 1: linearity, product, quotient, and transpose rules</center>
 
-![table 2]({{ site.url }}/images/1-23-19/matrix_rules.png)
+![table 2]({{ site.url }}/images/1-23-19/matrix_rules.PNG)
 <center>Figure 2: matrix differential rules</center>
 
 In Figure 2, $\otimes$ means the Kronecker product and $\odot$ means the Hadamard product.
@@ -174,10 +174,10 @@ Although the chain rule isn't listed in these figures, you can just refer to the
 These rules wouldn't be very useful without identification tables, however, so Figures 3 and 4 have those.
 I haven't been able to find a good succinct source of tables like this anywhere, so I thought it would be useful to have those handy.
 
-![table 3]({{ site.url }}/images/1-23-19/first_identification_table.png)
+![table 3]({{ site.url }}/images/1-23-19/first_identification_table.PNG)
 <center>Figure 3: the first identification table</center>
 
-![table 4]({{ site.url }}/images/1-23-19/second_identification_table.png)
+![table 4]({{ site.url }}/images/1-23-19/second_identification_table.PNG)
 <center>Figure 4: the second identification table</center>
 
 In Figure 4, we've got this weird subscript $v$ notation. That just means a sort of blockwise transpose:
