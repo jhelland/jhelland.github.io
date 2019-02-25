@@ -4,12 +4,9 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+I'm a thesis-based masters student in Electrical Engineering at the Colorado School of Mines.
+My focus is on information systems and my research primarily studies a certain class of convex optimization algorithms for solving blind inverse problems.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+Please don't.
