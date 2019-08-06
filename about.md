@@ -4,8 +4,9 @@ title: About
 permalink: /about/
 ---
 
-I'm a thesis-based masters student in Electrical Engineering at the Colorado School of Mines.
-My focus is on information systems and my research primarily studies a certain class of convex optimization algorithms for solving blind inverse problems.
+I was once asked to provide some "interesting" facts about myself.
+I responded that I enjoy making homemade pasta.
+I've never made pasta in my entire life.
 
 ### Contact me
 
